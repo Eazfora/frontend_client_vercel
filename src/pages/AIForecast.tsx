@@ -14,7 +14,7 @@ import { formatRupiah } from '../utils/currency';
 import axios from 'axios';
 
 // Pastikan base URL ini sesuai dengan backend NestJS kamu
-const API_BASE = 'http://localhost:3000';
+const API_BASE = 'https://backend-service-vercel-up9v.vercel.app';
 
 interface ChartDataPoint {
   date: string;

@@ -38,7 +38,7 @@ export default function AIAssistant() {
 
     try {
       // 2. PERBAIKAN URL: Sesuaikan dengan port & prefix controller NestJS Anda (misal ke /dashboard/chat)
-      const response = await axios.post('http://localhost:3000/chat', { message: currentInput });
+      const response = await axios.post('https://backend-service-vercel-up9v.vercel.app/chat', { message: currentInput });
       
       // 3. PENGAMAN: Ekstrak teks string murni secara ketat agar React tidak crash
       const replyText = response.data?.reply || 'Maaf, server AI memberikan respon kosong.';

@@ -14,7 +14,7 @@ import {
 import axios from 'axios';
 import { formatRupiah } from '../utils/currency';
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE = 'https://backend-service-vercel-up9v.vercel.app';
 
 interface Product {
   id: number;

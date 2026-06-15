@@ -27,7 +27,7 @@ export default function RestockModal({ isOpen, onClose, onRestockSuccess }: Rest
       // Menambahkan token autentikasi (karena Dashboard.tsx kamu menggunakan ini)
       const token = localStorage.getItem('access_token');
       
-      axios.get('http://localhost:3000/api/dashboard/products', {
+      axios.get('https://backend-service-vercel-up9v.vercel.app/api/dashboard/products', {
         headers: { Authorization: `Bearer ${token}` }
       }) 
         .then(res => setProducts(res.data.data))
@@ -50,7 +50,7 @@ export default function RestockModal({ isOpen, onClose, onRestockSuccess }: Rest
     setIsLoading(true);
     try {
       const token = localStorage.getItem('access_token');
-      await axios.patch(`http://localhost:3000/api/dashboard/update-stock/${selectedProductId}`, {
+      await axios.patch(`https://backend-service-vercel-up9v.vercel.app/api/dashboard/update-stock/${selectedProductId}`, {
         addedQuantity: Number(addedQuantity)
       }, {
         headers: { Authorization: `Bearer ${token}` }

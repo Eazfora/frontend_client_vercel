@@ -47,7 +47,7 @@ export default function TransactionModal({ isOpen, onClose, onSuccess }: Transac
     setLoadingProducts(true);
     try {
       const token = localStorage.getItem('access_token');
-      const response = await axios.get('http://localhost:3000/api/dashboard/products', {
+      const response = await axios.get('https://backend-service-vercel-up9v.vercel.app', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProducts(response.data.data || []);
@@ -98,7 +98,7 @@ export default function TransactionModal({ isOpen, onClose, onSuccess }: Transac
         region: region
       };
 
-      await axios.post('http://localhost:3000/api/dashboard/transactions', finalPayload, {
+      await axios.post('https://backend-service-vercel-up9v.vercel.app/api/dashboard/transactions', finalPayload, {
         headers: { Authorization: `Bearer ${token}` }
       });
       onSuccess();

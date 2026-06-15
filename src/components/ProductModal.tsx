@@ -36,7 +36,7 @@ export default function ProductModal({ isOpen, onClose, onSuccess }: ProductModa
     };
 
     try {
-      await axios.post('http://localhost:3000/api/dashboard/products', payload, {
+      await axios.post('https://backend-service-vercel-up9v.vercel.app/api/dashboard/products', payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
       onSuccess(); 
