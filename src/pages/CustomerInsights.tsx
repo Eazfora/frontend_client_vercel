@@ -5,7 +5,7 @@ import { Users, HeartCrack, DollarSign, Mail, Download, AlertTriangle, RefreshCw
 import axios from 'axios';
 import { formatRupiah } from '../utils/currency';
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE = 'https://backend-service-vercel-up9v.vercel.app';
 
 interface ChurnSummary {
   churn_trend: any[];
