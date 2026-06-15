@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50 font-sans antialiased m-0 p-0 transition-colors duration-200;
+  }
+}
+
+/* Custom scrollbar for chat widget */
+.scrollbar-w-2::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+.scrollbar-track-blue-lighter::-webkit-scrollbar-track {
+  background-color: #f1f5f9;
+}
+.scrollbar-thumb-blue::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 9999px;
+}
+.scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+}
