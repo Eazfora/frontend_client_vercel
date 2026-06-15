@@ -28,6 +28,8 @@ export default function AIForecast() {
   const { t } = useTranslation();
 
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [region] = useState('All');
+
 
   // 1. State Filter
   const [category, setCategory] = useState('All');
@@ -38,7 +40,6 @@ export default function AIForecast() {
 
   const [startDate, setStartDate] = useState(thirtyDaysAgo);
   const [endDate, setEndDate] = useState(today);
-  const [region, setRegion] = useState('Indonesia');
 
   // 2. State Data Dinamis
   const [dbCategories, setDbCategories] = useState<string[]>([]);

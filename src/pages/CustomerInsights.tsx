@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
-import { Users, HeartCrack, DollarSign, Mail, Download, AlertTriangle, RefreshCw, TrendingUp, Brain } from 'lucide-react';
+import { Users, HeartCrack, DollarSign, Mail, Download, AlertTriangle, RefreshCw, Brain } from 'lucide-react';
 import axios from 'axios';
 import { formatRupiah } from '../utils/currency';
 
@@ -26,6 +26,7 @@ interface ChurnSummary {
     Frequency: number;
     Monetary: number;
     Churn: number;
+    churn_probability?: number; // Diperlukan agar TypeScript tidak error
   }>;
   engine: string;
 }
@@ -68,7 +69,7 @@ export default function CustomerInsights() {
     alert(`✅ BERHASIL!\n\nEmail Promo Retensi (Diskon Varian Kopi Baru) telah dikirimkan secara otomatis ke ${customerName}.`);
   };
 
-const fetchData = async () => {
+  const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -92,10 +93,10 @@ const fetchData = async () => {
 
       customers.forEach((c: any) => {
         // Ambil nilai secara aman dari properti mana pun (Case-insensitive)
-        const valMonetary = c.Monetary ?? c.monetary ?? 0;
-        const valChurn = c.Churn ?? c.churn ?? c.churnProbability ?? c.Churn_Probability ?? 0;
-        const valRecency = c.Recency ?? c.recency ?? 0;
-        const valFreq = c.Frequency ?? c.frequency ?? 0;
+        const valMonetary = c.Monetary ?? 0;
+        const valChurn = c.Churn ?? c.churnProbability ?? c.Churn_Probability ?? 0;
+        const valRecency = c.Recency ?? 0;
+        const valFreq = c.Frequency ?? 0;
 
         totalMonetary += valMonetary;
         totalChurnProb += valChurn;
@@ -115,7 +116,7 @@ const fetchData = async () => {
       const avgChurn = totalCustomers > 0 ? (totalChurnProb / totalCustomers) * 100 : 0;
 
       // 2. MASUKKAN HASIL KALKULASI KE STATE REACT
-    setData({
+      setData({
         total_customers: totalCustomers,
         retained: totalCustomers, 
         churned: 0,
@@ -143,8 +144,6 @@ const fetchData = async () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  
 
   // 2. FUNGSI AKSI: EKSPOR DATA CHURN
   const handleExportCSV = () => {
@@ -195,8 +194,7 @@ const fetchData = async () => {
     { name: t('customers.low_value'), value: data.segments.low_value || 0, color: '#94a3b8' },
   ] : [];
 
- // 3. MEMBUAT TREN CHURN DINAMIS
-  
+  // 3. MEMBUAT TREN CHURN DINAMIS
   const churnTrendData = data?.churn_trend || [];
 
   const filteredCustomers = data?.at_risk_customers?.filter(c => {
@@ -204,18 +202,16 @@ const fetchData = async () => {
     const searchString = filterText.toLowerCase();
     
     // Ambil ID aman (Cek CustomerID, id, atau customer_id)
-    const rawId = c.CustomerID ?? c.id ?? c.customer_id ?? '00';
+    const rawId = c.CustomerID ?? '00';
     const idString = String(rawId);
     
     // Ambil Nama aman
-    const rawName = c.Name ?? c.name ?? `Pelanggan #${idString}`;
+    const rawName = c.Name ?? `Pelanggan #${idString}`;
     
     return rawName.toLowerCase().includes(searchString) || idString.includes(searchString);
   }) || [];
 
   return (
-
-    
     <div className="space-y-6">
       <div className="flex justify-between items-end">
         <div>
@@ -306,9 +302,6 @@ const fetchData = async () => {
           </div>
         </div>
 
-
-        
-
         {/* Metrics & Churn Trend */}
         <div className="lg:col-span-2 space-y-6">
           <div className="grid grid-cols-3 gap-6">
@@ -318,7 +311,6 @@ const fetchData = async () => {
                 <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{t('customers.active_users')}</span>
               </div>
               <div className="flex items-end gap-2">
-                {/* PERBAIKAN 3: Fallback ke 0 jika retained undefined */}
                 <h4 className="text-3xl font-bold text-slate-900 dark:text-white">{(data?.retained ?? 0).toLocaleString('id-ID')}</h4>
                 <span className="text-sm font-medium text-brand-600 dark:text-brand-400 mb-1">↗ 4.2%</span>
               </div>
@@ -329,7 +321,6 @@ const fetchData = async () => {
                 <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{t('customers.avg_churn_rate')}</span>
               </div>
               <div className="flex items-end gap-2">
-                {/* PERBAIKAN 3: Fallback ke 0 sebelum toFixed() dipanggil */}
                 <h4 className="text-3xl font-bold text-slate-900 dark:text-white">{(data?.churn_rate ?? 0).toFixed(1)}%</h4>
                 <span className="text-sm font-medium text-red-500 dark:text-red-400 mb-1">↗ 0.5%</span>
               </div>
@@ -340,7 +331,6 @@ const fetchData = async () => {
                 <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{t('customers.est_ltv')}</span>
               </div>
               <div className="flex items-end gap-2">
-                {/* PERBAIKAN 3: Fallback ke 0 */}
                 <h4 className="text-2xl font-bold text-slate-900 dark:text-white">{formatRupiah(data?.avg_monetary ?? 0)}</h4>
               </div>
             </div>
@@ -349,14 +339,14 @@ const fetchData = async () => {
           <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">{t('customers.churn_trend')}</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">{t('customers.churn_trend_desc')}</p>
-            {/* PERBAIKAN 2: Berikan dimensi height spesifik (160px) pada chart bar */}
             <div className="w-full" style={{ height: 160 }}>
               <ResponsiveContainer width="100%" height={160}>
                 <BarChart data={churnTrendData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" opacity={0.5} />
                   <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11 }} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11 }} tickFormatter={(v) => `${v}%`} />
-                  <RechartsTooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} formatter={(v: number) => [`${v}%`, 'Churn Rate']} />
+                  {/* Diperbaiki formatter-nya menjadi (v: any) */}
+                  <RechartsTooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} formatter={(v: any) => [`${v}%`, 'Churn Rate']} />
                   <Bar dataKey="rate" fill="#ec4899" radius={[4, 4, 0, 0]} barSize={28} />
                 </BarChart>
               </ResponsiveContainer>
@@ -381,11 +371,6 @@ const fetchData = async () => {
               className="pl-3 pr-4 py-1.5 text-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white rounded-lg focus:border-brand-500 outline-none" 
             />
           </div>
-
-
-
-
-          
         </div>
         <div className="p-6">
           <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">{t('customers.at_risk_desc')}</p>
@@ -409,20 +394,18 @@ const fetchData = async () => {
                   </tr>
                 ) : (
                   filteredCustomers.map((customer, index) => {
-                    // EKSTRAKSI DATA SUPER AMAN DARI BACKEND
-                    const safeId = customer.CustomerID ?? customer.id ?? customer.customer_id ?? `00${index}`;
-                    const safeName = customer.Name ?? customer.name ?? `Pelanggan #${safeId}`;
-                    const safeFreq = customer.Frequency ?? customer.frequency ?? 0;
-                    const safeRecency = customer.Recency ?? customer.recency ?? 0;
-                    const safeMonetary = customer.Monetary ?? customer.monetary ?? 0;
-                    const safeChurn = customer.Churn ?? customer.churn ?? customer.churn_probability ?? 0;
+                    const safeId = customer.CustomerID ?? `00${index}`;
+                    const safeName = customer.Name ?? `Pelanggan #${safeId}`;
+                    const safeFreq = customer.Frequency ?? 0;
+                    const safeRecency = customer.Recency ?? 0;
+                    const safeMonetary = customer.Monetary ?? 0;
+                    const safeChurn = customer.Churn ?? customer.churn_probability ?? 0;
 
                     return (
                       <tr key={safeId}>
                         <td className="py-4">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400 flex items-center justify-center font-bold">
-                              {/* Gunakan String() alih-alih .toString() agar tidak crash jika undefined */}
                               #{String(safeId).slice(-2)}
                             </div>
                             <div>
