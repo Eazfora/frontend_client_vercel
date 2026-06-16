@@ -375,7 +375,7 @@ export default function Dashboard() {
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" opacity={0.5} />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} dx={-10} width={80} tickFormatter={(v) => formatRupiahShort(v)} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12, textAnchor: 'start', dx: -70 }} width={75} tickFormatter={(v) => formatRupiahShort(v)} />
                   <RechartsTooltip
                     contentStyle={{
                       borderRadius: '12px',
@@ -436,7 +436,7 @@ export default function Dashboard() {
                 <BarChart data={chartData} margin={{ top: 5, right: 0, left: -20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" opacity={0.5} />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11 }} tickFormatter={(v) => formatRupiahShort(v)} dx={-10} width={80}/>
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11, textAnchor: 'start', dx: -70 }} width={75} tickFormatter={(v) => formatRupiahShort(v)} />
                   <RechartsTooltip
                     cursor={{ fill: 'rgba(241, 245, 249, 0.5)' }}
                     contentStyle={{
@@ -479,7 +479,7 @@ export default function Dashboard() {
               <LineChart data={data?.customerEngagement ?? []} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" opacity={0.5} />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} dx={-10} width={80} tickFormatter={(v) => `${(v / 1000).toFixed(1)}k`} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12, textAnchor: 'start', dx: -70 }} width={75} tickFormatter={(v) => `${(v / 1000).toFixed(1)}k`} />
                 <RechartsTooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.15)' }} />
                 <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
                 <Line type="monotone" dataKey="active" name={translate('customers.active_users')} stroke="#8b5cf6" strokeWidth={3} dot={{ r: 4, strokeWidth: 2 }} activeDot={{ r: 6 }} />
