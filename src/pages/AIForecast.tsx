@@ -349,12 +349,22 @@ export default function AIForecast() {
                     tick={{ fill: '#64748b', fontSize: 12 }}
                     dy={10}
                   />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: '#64748b', fontSize: 12 }}
-                    tickFormatter={(v) => `Rp ${(v / 1000000).toFixed(0)}jt`}
-                  />
+                  <YAxis 
+  axisLine={false} 
+  tickLine={false} 
+  tick={{ fill: '#64748b', fontSize: 12 }} 
+  dx={-10} 
+  tickFormatter={(v) => {
+    if (v >= 1000000) {
+      const formatted = (v / 1000000).toFixed(1);
+      return `Rp ${formatted.replace('.0', '')}jt`;
+    }
+    if (v >= 1000) {
+      return `Rp ${(v / 1000).toFixed(0)}rb`;
+    }
+    return `Rp ${v}`;
+  }} 
+/>
                   <RechartsTooltip
                     contentStyle={{
                       borderRadius: '12px',
