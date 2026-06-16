@@ -353,7 +353,8 @@ export default function AIForecast() {
   axisLine={false} 
   tickLine={false} 
   tick={{ fill: '#64748b', fontSize: 12 }} 
-  dx={-10} 
+  dx={0}
+  width={80} 
   tickFormatter={(v) => {
     if (v >= 1000000) {
       const formatted = (v / 1000000).toFixed(1);
