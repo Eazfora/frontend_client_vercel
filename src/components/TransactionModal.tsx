@@ -47,7 +47,7 @@ export default function TransactionModal({ isOpen, onClose, onSuccess }: Transac
     setLoadingProducts(true);
     try {
       const token = localStorage.getItem('access_token');
-      const response = await axios.get('https://backend-service-vercel-up9v.vercel.app', {
+      const response = await axios.get('https://backend-service-vercel-up9v.vercel.app/api/dashboard/products', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProducts(response.data.data || []);
