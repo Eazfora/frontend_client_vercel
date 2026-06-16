@@ -375,7 +375,7 @@ export default function Dashboard() {
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" opacity={0.5} />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} dx={-10} tickFormatter={(v) => formatRupiahShort(v)} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} dx={0} width={80} tickFormatter={(v) => formatRupiahShort(v)} />
                   <RechartsTooltip
                     contentStyle={{
                       borderRadius: '12px',
