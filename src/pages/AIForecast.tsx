@@ -28,6 +28,7 @@ interface ForecastInsights {
   anomalySpike: number;
   anomalyCategory: string;
   confidenceScore: number;
+  correlation: { promo: number; weekend: number }; // 👈 Tambahkan baris ini
 }
 
 export default function AIForecast() {
@@ -36,7 +37,6 @@ export default function AIForecast() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [region] = useState('All');
 
-  const [insights, setInsights] = useState<ForecastInsights | null>(null);
 
   // 1. State Filter
   const [category, setCategory] = useState('All');
@@ -53,12 +53,12 @@ export default function AIForecast() {
   const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
   
   // 3. State Insights dari AI (Sudah dibersihkan dari nextMonthTarget)
-  const [insights, setInsights] = useState({
-    anomalySpike: 0,
-    anomalyCategory: 'Semua',
-    confidenceScore: 0,
-    correlation: { promo: 0, weekend: 0 },
-  });
+const [insights, setInsights] = useState<ForecastInsights>({
+  anomalySpike: 0,
+  anomalyCategory: 'Semua',
+  confidenceScore: 0,
+  correlation: { promo: 0.85, weekend: 0.72 }, // Beri nilai default
+});
 
   // 4. State UI (Loading & Modal)
   const [isLoading, setIsLoading] = useState(true);
