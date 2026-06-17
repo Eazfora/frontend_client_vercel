@@ -184,6 +184,20 @@ const [insights, setInsights] = useState<ForecastInsights>({
     }
   };
 
+  // Fungsi untuk membuat teks narasi pertumbuhan menjadi dinamis
+  const getGrowthNarrative = () => {
+    const score = insights?.confidenceScore ?? 0;
+    const catName = category === 'All' ? 'keseluruhan' : `kategori ${category}`;
+
+    if (score >= 85) {
+      return `Volume penjualan ${catName} mempertahankan tren yang sangat kuat dan positif. Model AI menunjukkan tingkat kepercayaan tinggi berdasarkan pola historis yang stabil.`;
+    } else if (score >= 70) {
+      return `Terdapat tren yang cukup berfluktuasi pada penjualan ${catName}. Model memprediksi dengan tingkat kepercayaan menengah, disarankan untuk memantau promosi berjalan.`;
+    } else {
+      return `Sulit memprediksi pola pasti untuk penjualan ${catName} saat ini. Skor kepercayaan AI rendah, menandakan adanya anomali atau data historis yang kurang stabil.`;
+    }
+  };
+
   // ==========================================
   // KALKULASI TOTAL UNTUK STAT CARD
   // ==========================================
@@ -472,9 +486,8 @@ const [insights, setInsights] = useState<ForecastInsights>({
     {t('forecast.growth_title')}
   </h3>
   <p className="text-slate-600 dark:text-slate-400 text-sm mb-6">
-    Volume penjualan keseluruhan mempertahankan tren positif. Model
-    prediktif menunjukkan kepercayaan tinggi berdasarkan data historis.
-  </p>
+              {getGrowthNarrative()}
+            </p>
   <div className="space-y-2">
     <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
       <span>{t('forecast.confidence')}</span>
