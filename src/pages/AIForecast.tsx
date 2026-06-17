@@ -24,12 +24,19 @@ interface ChartDataPoint {
   upperBound: number | null;
 }
 
+interface ForecastInsights {
+  anomalySpike: number;
+  anomalyCategory: string;
+  confidenceScore: number;
+}
+
 export default function AIForecast() {
   const { t } = useTranslation();
 
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [region] = useState('All');
 
+  const [insights, setInsights] = useState<ForecastInsights | null>(null);
 
   // 1. State Filter
   const [category, setCategory] = useState('All');
@@ -127,7 +134,9 @@ export default function AIForecast() {
           };
         });
 
-        setChartData(processedData);
+        setChartData(response.data.data);
+
+        setInsights(response.data.insights);
 
         // Proses data Insights agar card sebelah kanan ikut dinamis
         if (response.data.insights) {
@@ -434,17 +443,17 @@ export default function AIForecast() {
                   {t('forecast.anomaly_title')}
                 </h3>
                 {/* TEKS ANOMALI DINAMIS */}
-                <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed mb-4">
-                  Prakiraan menunjukkan lonjakan{' '}
-                  <strong className="text-brand-600 dark:text-brand-400">
-                    {insights.anomalySpike}%
-                  </strong>{' '}
-                  yang tidak biasa dalam permintaan untuk kategori{' '}
-                  <span className="font-semibold text-slate-900 dark:text-white border-b border-slate-300">
-                    {insights.anomalyCategory}
-                  </span>{' '}
-                  diperkirakan pada akhir minggu ini.
-                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">
+  Prakiraan menunjukkan lonjakan{' '}
+  <span className="font-bold text-brand-600">
+    {insights?.anomalySpike ?? 0}%
+  </span>{' '}
+  yang tidak biasa dalam permintaan untuk kategori{' '}
+  <span className="font-bold">
+    {insights?.anomalyCategory ?? 'Semua Kategori'}
+  </span>{' '}
+  diperkirakan pada akhir minggu ini.
+</p>
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -470,9 +479,19 @@ export default function AIForecast() {
               <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
                 <span>{t('forecast.confidence')}</span>
                 {/* SKOR KEPERCAYAAN DINAMIS */}
-                <span className="text-slate-900 dark:text-white font-bold">
-                  {insights.confidenceScore}%
-                </span>
+              <div className="flex justify-between items-center mb-1">
+  <span className="text-xs font-semibold text-slate-500">Skor Kepercayaan</span>
+  <span className="text-sm font-bold text-slate-900 dark:text-white">
+    {insights?.confidenceScore ?? 0}%
+  </span>
+</div>
+{/* Progress bar visual */}
+<div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
+  <div 
+    className="bg-brand-500 h-2 rounded-full transition-all duration-500" 
+    style={{ width: `${insights?.confidenceScore ?? 0}%` }} // 👈 Lebar bar menyesuaikan persentase
+  ></div>
+</div>
               </div>
               <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
                 <div
