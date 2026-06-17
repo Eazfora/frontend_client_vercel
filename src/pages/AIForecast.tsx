@@ -134,7 +134,7 @@ const [insights, setInsights] = useState<ForecastInsights>({
           };
         });
 
-        setChartData(response.data.data);
+        setChartData(processedData);
 
         setInsights(response.data.insights);
 
