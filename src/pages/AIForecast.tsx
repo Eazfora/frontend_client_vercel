@@ -468,39 +468,30 @@ export default function AIForecast() {
           </div>
 
           <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
-              {t('forecast.growth_title')}
-            </h3>
-            <p className="text-slate-600 dark:text-slate-400 text-sm mb-6">
-              Volume penjualan keseluruhan mempertahankan tren positif. Model
-              prediktif menunjukkan kepercayaan tinggi berdasarkan data historis.
-            </p>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
-                <span>{t('forecast.confidence')}</span>
-                {/* SKOR KEPERCAYAAN DINAMIS */}
-              <div className="flex justify-between items-center mb-1">
-  <span className="text-xs font-semibold text-slate-500">Skor Kepercayaan</span>
-  <span className="text-sm font-bold text-slate-900 dark:text-white">
-    {insights?.confidenceScore ?? 0}%
-  </span>
+  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
+    {t('forecast.growth_title')}
+  </h3>
+  <p className="text-slate-600 dark:text-slate-400 text-sm mb-6">
+    Volume penjualan keseluruhan mempertahankan tren positif. Model
+    prediktif menunjukkan kepercayaan tinggi berdasarkan data historis.
+  </p>
+  <div className="space-y-2">
+    <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
+      <span>{t('forecast.confidence')}</span>
+      {/* SKOR KEPERCAYAAN DINAMIS */}
+      <span className="text-slate-900 dark:text-white font-bold">
+        {insights?.confidenceScore ?? 0}%
+      </span>
+    </div>
+    <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+      <div
+        className="bg-brand-500 h-2 rounded-full transition-all duration-1000 ease-out"
+        style={{ width: `${insights?.confidenceScore ?? 0}%` }}
+      ></div>
+    </div>
+  </div>
 </div>
-{/* Progress bar visual */}
-<div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
-  <div 
-    className="bg-brand-500 h-2 rounded-full transition-all duration-500" 
-    style={{ width: `${insights?.confidenceScore ?? 0}%` }} // 👈 Lebar bar menyesuaikan persentase
-  ></div>
-</div>
-              </div>
-              <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
-                <div
-                  className="bg-brand-500 h-2 rounded-full transition-all duration-1000 ease-out"
-                  style={{ width: `${insights.confidenceScore}%` }}
-                ></div>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
 
